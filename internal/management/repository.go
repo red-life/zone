@@ -17,8 +17,8 @@ type ManagementRepository struct {
 	db *gorm.DB
 }
 
-func (m *ManagementRepository) SaveZone(zone Zone) error {
-	return m.db.Create(zone).Error
+func (m *ManagementRepository) SaveZone(zone Zone) (Zone, error) {
+	return zone, m.db.Create(&zone).Error
 }
 
 func (m *ManagementRepository) DeleteZoneByID(zoneID uuid.UUID) error {
@@ -27,8 +27,8 @@ func (m *ManagementRepository) DeleteZoneByID(zoneID uuid.UUID) error {
 	}).Error
 }
 
-func (m *ManagementRepository) SaveZoneRecord(record Record) error {
-	return m.db.Create(record).Error
+func (m *ManagementRepository) SaveZoneRecord(record Record) (Record, error) {
+	return record, m.db.Create(&record).Error
 }
 
 func (m *ManagementRepository) FindZoneRecords(zoneID uuid.UUID) ([]Record, error) {
@@ -45,14 +45,15 @@ func (m *ManagementRepository) FindZoneRecordByID(zoneID uuid.UUID, recordID uui
 	return record, result.Error
 }
 
-func (m *ManagementRepository) UpdateZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID, record Record) error {
-	return m.db.Save(Record{
+func (m *ManagementRepository) UpdateZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID, record Record) (Record, error) {
+	saveRecord := Record{
 		ID:     recordID,
 		ZoneID: zoneID,
 		Name:   record.Name,
 		TTL:    record.TTL,
 		Value:  record.Value,
-	}).Error
+	}
+	return saveRecord, m.db.Save(&saveRecord).Error
 }
 
 func (m *ManagementRepository) DeleteZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID) error {

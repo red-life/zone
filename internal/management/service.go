@@ -12,7 +12,7 @@ type ManagementService struct {
 	repo Repository
 }
 
-func (m *ManagementService) CreateZone(zone Zone) error {
+func (m *ManagementService) CreateZone(zone Zone) (Zone, error) {
 	return m.repo.SaveZone(zone)
 }
 
@@ -20,7 +20,7 @@ func (m *ManagementService) DeleteZone(zoneID uuid.UUID) error {
 	return m.repo.DeleteZoneByID(zoneID)
 }
 
-func (m *ManagementService) AddRecord(record Record) error {
+func (m *ManagementService) AddRecord(record Record) (Record, error) {
 	return m.repo.SaveZoneRecord(record)
 }
 
@@ -32,7 +32,7 @@ func (m *ManagementService) GetRecord(zoneID uuid.UUID, recordID uuid.UUID) (Rec
 	return m.repo.FindZoneRecordByID(zoneID, recordID)
 }
 
-func (m *ManagementService) UpdateRecord(zoneID uuid.UUID, recordID uuid.UUID, record Record) error {
+func (m *ManagementService) UpdateRecord(zoneID uuid.UUID, recordID uuid.UUID, record Record) (Record, error) {
 	return m.repo.UpdateZoneRecordByID(zoneID, recordID, record)
 }
 
