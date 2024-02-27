@@ -3,6 +3,7 @@ package management
 import (
 	"errors"
 	"gorm.io/gorm"
+	"net/http"
 )
 
 var (
@@ -12,6 +13,9 @@ var (
 )
 
 func GormToCustomError(err error) error {
+	if err == nil {
+		return nil
+	}
 	switch {
 	case errors.Is(err, gorm.ErrDuplicatedKey):
 		return ErrAlreadyExists
@@ -19,5 +23,19 @@ func GormToCustomError(err error) error {
 		return ErrNotFound
 	default:
 		return ErrInternalError
+	}
+}
+
+func CustomErrorToHTTPStatusCode(err error) int {
+	if err == nil {
+		return http.StatusOK
+	}
+	switch {
+	case errors.Is(err, ErrAlreadyExists):
+		return http.StatusConflict
+	case errors.Is(err, ErrNotFound):
+		return http.StatusNotFound
+	default:
+		return http.StatusInternalServerError
 	}
 }
