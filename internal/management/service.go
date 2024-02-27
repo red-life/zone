@@ -21,21 +21,21 @@ func (m *ManagementService) DeleteZone(zoneID uuid.UUID) error {
 }
 
 func (m *ManagementService) AddRecord(record Record) error {
-	return m.repo.SaveRecord(record)
+	return m.repo.SaveZoneRecord(record)
 }
 
-func (m *ManagementService) GetRecords() ([]Record, error) {
-	return m.repo.FindRecords()
+func (m *ManagementService) GetRecords(zoneID uuid.UUID) ([]Record, error) {
+	return m.repo.FindZoneRecords(zoneID)
 }
 
-func (m *ManagementService) GetRecord(recordID uuid.UUID) (Record, error) {
-	return m.repo.FindRecordByID(recordID)
+func (m *ManagementService) GetRecord(zoneID uuid.UUID, recordID uuid.UUID) (Record, error) {
+	return m.repo.FindZoneRecordByID(zoneID, recordID)
 }
 
-func (m *ManagementService) UpdateRecord(recordID uuid.UUID, record Record) error {
-	return m.repo.UpdateRecordByID(recordID, record)
+func (m *ManagementService) UpdateRecord(zoneID uuid.UUID, recordID uuid.UUID, record Record) error {
+	return m.repo.UpdateZoneRecordByID(zoneID, recordID, record)
 }
 
-func (m *ManagementService) DeleteRecord(recordID uuid.UUID) error {
-	return m.repo.DeleteRecordByID(recordID)
+func (m *ManagementService) DeleteRecord(zoneID uuid.UUID, recordID uuid.UUID) error {
+	return m.repo.DeleteZoneRecordByID(zoneID, recordID)
 }
