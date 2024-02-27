@@ -29,5 +29,5 @@ type Record struct {
 	Type   RecordType   `gorm:"type:varchar(7);unique;not null"` // not using enums due to further update that might support other record types
 	TTL    uint32       `gorm:"type:integer;check:ttl >= 0;not null"`
 	Value  pgtype.JSONB `gorm:"type:jsonb;not null"`
-	Zone   Zone         `gorm:"references:ZoneID;foreignKey:ZoneID;constraint:OnDelete:CASCADE"`
+	Zone   Zone         `gorm:"foreignKey:ZoneID;constraint:OnDelete:CASCADE"`
 }
