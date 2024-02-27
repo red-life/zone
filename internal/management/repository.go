@@ -37,7 +37,7 @@ func (m *ManagementRepository) FindRecords() ([]Record, error) {
 	return records, result.Error
 }
 
-func (m *ManagementRepository) FindRecord(recordID uuid.UUID) (Record, error) {
+func (m *ManagementRepository) FindRecordByID(recordID uuid.UUID) (Record, error) {
 	var record Record
 	result := m.db.Find(Record{
 		ID: recordID,
