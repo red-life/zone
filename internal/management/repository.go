@@ -22,19 +22,21 @@ func (m *ManagementRepository) SaveZone(zone Zone) (Zone, error) {
 }
 
 func (m *ManagementRepository) DeleteZoneByID(zoneID uuid.UUID) error {
-	return m.db.Delete(Zone{
+	result := m.db.Delete(Zone{
 		ID: zoneID,
-	}).Error
+	})
+	return GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) SaveZoneRecord(record Record) (Record, error) {
-	return record, m.db.Create(&record).Error
+	result := m.db.Create(&record)
+	return record, GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) FindZoneRecords(zoneID uuid.UUID) ([]Record, error) {
 	records := make([]Record, 0)
 	result := m.db.Find(&records).Where("zone_id = ?", zoneID)
-	return records, result.Error
+	return records, GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) FindZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID) (Record, error) {
@@ -42,7 +44,7 @@ func (m *ManagementRepository) FindZoneRecordByID(zoneID uuid.UUID, recordID uui
 	result := m.db.Find(Record{
 		ID: recordID,
 	}).Where("zone_id = ?", zoneID).First(&record)
-	return record, result.Error
+	return record, GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) UpdateZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID, record Record) (Record, error) {
@@ -53,12 +55,14 @@ func (m *ManagementRepository) UpdateZoneRecordByID(zoneID uuid.UUID, recordID u
 		TTL:    record.TTL,
 		Value:  record.Value,
 	}
-	return saveRecord, m.db.Save(&saveRecord).Error
+	result := m.db.Save(&saveRecord)
+	return saveRecord, GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) DeleteZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID) error {
-	return m.db.Delete(Record{
+	result := m.db.Delete(Record{
 		ID:     recordID,
 		ZoneID: zoneID,
-	}).Error
+	})
+	return GormToCustomError(result.Error)
 }
