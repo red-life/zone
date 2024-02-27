@@ -16,6 +16,14 @@ func (m *ManagementService) CreateZone(zone Zone) (Zone, error) {
 	return m.repo.SaveZone(zone)
 }
 
+func (m *ManagementService) GetZones() ([]Zone, error) {
+	return m.repo.FindZones()
+}
+
+func (m *ManagementService) GetZone(zoneID uuid.UUID) (Zone, error) {
+	return m.repo.FindZoneByID(zoneID)
+}
+
 func (m *ManagementService) DeleteZone(zoneID uuid.UUID) error {
 	return m.repo.DeleteZoneByID(zoneID)
 }

@@ -21,6 +21,18 @@ func (m *ManagementRepository) SaveZone(zone Zone) (Zone, error) {
 	return zone, m.db.Create(&zone).Error
 }
 
+func (m *ManagementRepository) FindZones() ([]Zone, error) {
+	zones := make([]Zone, 0)
+	result := m.db.Find(&zones)
+	return zones, GormToCustomError(result.Error)
+}
+
+func (m *ManagementRepository) FindZoneByID(zoneID uuid.UUID) (Zone, error) {
+	var zone Zone
+	result := m.db.Where("id = ?", zoneID).Find(&zone)
+	return zone, GormToCustomError(result.Error)
+}
+
 func (m *ManagementRepository) DeleteZoneByID(zoneID uuid.UUID) error {
 	result := m.db.Delete(Zone{
 		ID: zoneID,
