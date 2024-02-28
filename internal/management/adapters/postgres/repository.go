@@ -19,7 +19,8 @@ type ManagementRepository struct {
 }
 
 func (m *ManagementRepository) SaveZone(zone management.Zone) (management.Zone, error) {
-	return zone, m.db.Create(&zone).Error
+	result := m.db.Create(&zone)
+	return zone, management.GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) FindZones() ([]management.Zone, error) {
