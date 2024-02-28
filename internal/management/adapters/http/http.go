@@ -2,23 +2,25 @@ package http
 
 import "github.com/gin-gonic/gin"
 
-func NewHTTPServer(api *API, engine *gin.Engine, addr string) *HTTP {
+func NewHTTPServer(api *API, engine *gin.Engine, addr string, authMiddleware gin.HandlerFunc) *HTTP {
 	return &HTTP{
-		api:    api,
-		engine: engine,
-		addr:   addr,
+		api:            api,
+		engine:         engine,
+		authMiddleware: authMiddleware,
+		addr:           addr,
 	}
 }
 
 type HTTP struct {
-	api    *API
-	engine *gin.Engine
-	addr   string
+	api            *API
+	engine         *gin.Engine
+	authMiddleware gin.HandlerFunc
+	addr           string
 }
 
 func (h *HTTP) RegisterRoutes() {
 	api := h.engine.Group("/api/v1")
-
+	api.Use(h.authMiddleware)
 	api.GET("/zone", h.api.Zones)
 	api.GET("/zone/:zone_id", h.api.Zone)
 	api.POST("/zone", h.api.CreateZone)
