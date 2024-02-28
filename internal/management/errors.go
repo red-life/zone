@@ -9,6 +9,7 @@ import (
 var (
 	ErrAlreadyExists = errors.New("already exists")
 	ErrNotFound      = errors.New("not found")
+	ErrValidation    = errors.New("validation error")
 	ErrInternalError = errors.New("internal error")
 )
 
@@ -17,9 +18,11 @@ func GormToCustomError(err error) error {
 		return nil
 	}
 	switch {
-	case errors.As(err, &gorm.ErrDuplicatedKey):
+	case errors.Is(err, gorm.ErrDuplicatedKey):
 		return ErrAlreadyExists
-	case errors.As(err, &gorm.ErrRecordNotFound):
+	case errors.Is(err, gorm.ErrForeignKeyViolated):
+		return ErrNotFound
+	case errors.Is(err, gorm.ErrRecordNotFound):
 		return ErrNotFound
 	default:
 		return ErrInternalError
