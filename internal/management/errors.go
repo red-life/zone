@@ -17,9 +17,9 @@ func GormToCustomError(err error) error {
 		return nil
 	}
 	switch {
-	case errors.Is(err, gorm.ErrDuplicatedKey):
+	case errors.As(err, &gorm.ErrDuplicatedKey):
 		return ErrAlreadyExists
-	case errors.Is(err, gorm.ErrRecordNotFound):
+	case errors.As(err, &gorm.ErrRecordNotFound):
 		return ErrNotFound
 	default:
 		return ErrInternalError
