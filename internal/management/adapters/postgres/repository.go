@@ -31,7 +31,7 @@ func (m *ManagementRepository) FindZones() ([]management.Zone, error) {
 
 func (m *ManagementRepository) FindZoneByID(zoneID uuid.UUID) (management.Zone, error) {
 	var zone management.Zone
-	result := m.db.Where("id = ?", zoneID).Find(&zone)
+	result := m.db.Where("id = ?", zoneID).First(&zone)
 	return zone, management.GormToCustomError(result.Error)
 }
 
@@ -49,26 +49,29 @@ func (m *ManagementRepository) SaveZoneRecord(record management.Record) (managem
 
 func (m *ManagementRepository) FindZoneRecords(zoneID uuid.UUID) ([]management.Record, error) {
 	records := make([]management.Record, 0)
-	result := m.db.Find(&records).Where("zone_id = ?", zoneID)
+	result := m.db.Where("zone_id = ?", zoneID).Find(&records)
+	if result.RowsAffected <= 0 {
+		return records, management.ErrNotFound
+	}
 	return records, management.GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) FindZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID) (management.Record, error) {
 	var record management.Record
-	result := m.db.Find(management.Record{
-		ID: recordID,
-	}).Where("zone_id = ?", zoneID).First(&record)
+	result := m.db.Where("id = ? AND zone_id = ?", recordID, zoneID).First(&record)
 	return record, management.GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) UpdateZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID, record management.Record) (management.Record, error) {
-	saveRecord := management.Record{
+	updateRecord := management.Record{
 		Name:  record.Name,
 		TTL:   record.TTL,
 		Value: record.Value,
 	}
-	result := m.db.Where("id = ? AND zone_id = ?", recordID, zoneID).Save(&saveRecord)
-	return saveRecord, management.GormToCustomError(result.Error)
+	result := m.db.Where("id = ? AND zone_id = ?", recordID, zoneID).Updates(&updateRecord)
+	updateRecord.ID = recordID
+	updateRecord.ZoneID = zoneID
+	return updateRecord, management.GormToCustomError(result.Error)
 }
 
 func (m *ManagementRepository) DeleteZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID) error {
