@@ -4,6 +4,7 @@ go 1.22.0
 
 require (
 	github.com/bytedance/sonic v1.11.1 // indirect
+	github.com/caarlos0/env/v10 v10.0.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
