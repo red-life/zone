@@ -26,7 +26,7 @@ type Record struct {
 	ID     uuid.UUID    `gorm:"primaryKey;type:uuid;default:gen_random_uuid()" json:"id"`
 	ZoneID uuid.UUID    `gorm:"type:uuid" json:"zone_id"`
 	Name   string       `gorm:"type:varchar(255);unique;not null" json:"name"`
-	Type   RecordType   `gorm:"type:varchar(7);unique;not null" json:"type"` // not using enums due to further update that might support other record types
+	Type   RecordType   `gorm:"type:varchar(7);not null" json:"type"` // not using enums due to further update that might support other record types
 	TTL    uint32       `gorm:"type:integer;check:ttl >= 0;not null" json:"ttl"`
 	Value  pgtype.JSONB `gorm:"type:jsonb;not null" json:"value"`
 	Zone   Zone         `gorm:"foreignKey:ZoneID;constraint:OnDelete:CASCADE" json:"-"`
