@@ -61,13 +61,11 @@ func (m *ManagementRepository) FindZoneRecordByID(zoneID uuid.UUID, recordID uui
 
 func (m *ManagementRepository) UpdateZoneRecordByID(zoneID uuid.UUID, recordID uuid.UUID, record Record) (Record, error) {
 	saveRecord := Record{
-		ID:     recordID,
-		ZoneID: zoneID,
-		Name:   record.Name,
-		TTL:    record.TTL,
-		Value:  record.Value,
+		Name:  record.Name,
+		TTL:   record.TTL,
+		Value: record.Value,
 	}
-	result := m.db.Save(&saveRecord)
+	result := m.db.Where("id = ? AND zone_id = ?", recordID, zoneID).Save(&saveRecord)
 	return saveRecord, GormToCustomError(result.Error)
 }
 
