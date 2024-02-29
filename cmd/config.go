@@ -7,16 +7,25 @@ import (
 )
 
 type ManagementConfig struct {
-	Listen   string `env:"LISTEN,required"`
+	Listen   string   `env:"LISTEN,required"`
+	Username string   `env:"USERNAME,required"`
+	Password string   `env:"PASSWORD,required"`
+	Postgres Postgres `envPrefix:"POSTGRES_"`
+	Redis    Redis    `envPrefix:"REDIS_"`
+}
+
+type Postgres struct {
+	Host     string `env:"HOST,required"`
 	Username string `env:"USERNAME,required"`
 	Password string `env:"PASSWORD,required"`
-	Postgres struct {
-		Host     string `env:"HOST,required"`
-		Username string `env:"USERNAME,required"`
-		Password string `env:"PASSWORD,required"`
-		DB       string `env:"DB,required"`
-		Port     int    `env:"PORT,required"`
-	} `envPrefix:"POSTGRES_"`
+	DB       string `env:"DB,required"`
+	Port     int    `env:"PORT,required"`
+}
+
+type Redis struct {
+	Addr     string `env:"ADDR,required"`
+	Password string `env:"PASSWORD,required"`
+	DB       int    `env:"DB,required"`
 }
 
 func ParseManagementConfig() ManagementConfig {
