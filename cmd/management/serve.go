@@ -8,7 +8,7 @@ import (
 	"github.com/red-life/zone/internal/management"
 	"github.com/red-life/zone/internal/management/adapters/http"
 	postgresRepo "github.com/red-life/zone/internal/management/adapters/postgres"
-	"github.com/red-life/zone/pkg/mq"
+	"github.com/red-life/zone/internal/shared/mq"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
