@@ -46,6 +46,17 @@ func (m *MongoRecordRepository) DeleteZoneByID(zoneID uuid.UUID) error {
 	return err
 }
 
+func (m *MongoRecordRepository) FindRecord(recordType string, domain string) (resolver.Record, error) {
+	result := m.recordCollection.FindOne(context.Background(), bson.M{"record_type": recordType, "domain": domain})
+	if err := result.Err(); err != nil {
+		return resolver.Record{}, err
+	}
+	var record resolver.Record
+	err := result.Decode(&record)
+	return record, err
+
+}
+
 func (m *MongoRecordRepository) SaveRecord(record resolver.Record) error {
 	_, err := m.recordCollection.InsertOne(context.Background(), record)
 	return err
