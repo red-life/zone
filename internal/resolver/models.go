@@ -7,7 +7,7 @@ import (
 
 type Zone struct {
 	ZoneID uuid.UUID `bson:"zone_id"`
-	Domain uuid.UUID `bson:"domain"`
+	Zone   string    `bson:"zone"`
 }
 
 type Record struct {

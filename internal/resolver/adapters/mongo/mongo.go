@@ -46,8 +46,8 @@ func (m *MongoRecordRepository) DeleteZoneByID(zoneID uuid.UUID) error {
 	return err
 }
 
-func (m *MongoRecordRepository) FindRecord(recordType string, domain string) (resolver.Record, error) {
-	result := m.recordCollection.FindOne(context.Background(), bson.M{"record_type": recordType, "domain": domain})
+func (m *MongoRecordRepository) FindRecord(recordType string, zone string) (resolver.Record, error) {
+	result := m.recordCollection.FindOne(context.Background(), bson.M{"record_type": recordType, "zone": zone})
 	if err := result.Err(); err != nil {
 		return resolver.Record{}, err
 	}
