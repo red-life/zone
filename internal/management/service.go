@@ -1,8 +1,11 @@
 package management
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	"github.com/red-life/zone/pkg/mq"
+)
 
-func NewManagementService(repo Repository) *ManagementService {
+func NewManagementService(repo Repository, mq mq.MessageQueue) *ManagementService {
 	return &ManagementService{
 		repo: repo,
 	}
@@ -10,6 +13,7 @@ func NewManagementService(repo Repository) *ManagementService {
 
 type ManagementService struct {
 	repo Repository
+	mq   mq.MessageQueue
 }
 
 func (m *ManagementService) CreateZone(zone Zone) (Zone, error) {
