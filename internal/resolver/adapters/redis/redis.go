@@ -9,6 +9,10 @@ import (
 
 var _ resolver.Cache = (*RedisCache)(nil)
 
+var (
+	DeleteKeyWildcard = redis.NewScript(`return redis.call('del', unpack(redis.call('keys', ARGV[1])))`)
+)
+
 func NewRedisCache(rdb *redis.Client, ttl time.Duration) *RedisCache {
 	return &RedisCache{
 		rdb: rdb,
@@ -50,4 +54,8 @@ func (r *RedisCache) Get(key string) (string, error) {
 
 func (r *RedisCache) Delete(key string) error {
 	return r.rdb.Del(context.Background(), key).Err()
+}
+
+func (r *RedisCache) DeleteWildcard(key string) error {
+	return DeleteKeyWildcard.Eval(context.Background(), r.rdb, []string{key}).Err()
 }
