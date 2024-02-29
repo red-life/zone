@@ -23,19 +23,21 @@ type ZoneDeleted struct {
 }
 
 type RecordAdded struct {
-	ZoneID   uuid.UUID       `json:"zone_id"`
-	RecordID uuid.UUID       `json:"record_id"`
-	Name     string          `json:"name"`
-	TTL      uint32          `json:"ttl"`
-	Value    json.RawMessage `json:"value"`
+	ZoneID     uuid.UUID       `json:"zone_id"`
+	RecordID   uuid.UUID       `json:"record_id"`
+	RecordType string          `json:"record_type"`
+	Name       string          `json:"name"`
+	TTL        uint32          `json:"ttl"`
+	Value      json.RawMessage `json:"value"`
 }
 
 type RecordUpdated struct {
-	ZoneID   uuid.UUID       `json:"zone_id"`
-	RecordID uuid.UUID       `json:"record_id"`
-	Name     string          `json:"name"`
-	TTL      uint32          `json:"ttl"`
-	Value    json.RawMessage `json:"value"`
+	ZoneID     uuid.UUID       `json:"zone_id"`
+	RecordID   uuid.UUID       `json:"record_id"`
+	RecordType string          `json:"record_type"`
+	Name       string          `json:"name"`
+	TTL        uint32          `json:"ttl"`
+	Value      json.RawMessage `json:"value"`
 }
 
 type RecordDeleted struct {

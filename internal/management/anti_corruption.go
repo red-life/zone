@@ -21,22 +21,24 @@ func MapToZoneDeleted(zoneID uuid.UUID) events.ZoneDeleted {
 func MapRecordToRecordAdded(record Record) events.RecordAdded {
 	b, _ := record.Value.MarshalJSON()
 	return events.RecordAdded{
-		ZoneID:   record.ZoneID,
-		RecordID: record.ID,
-		Name:     record.Name,
-		TTL:      record.TTL,
-		Value:    b,
+		ZoneID:     record.ZoneID,
+		RecordID:   record.ID,
+		RecordType: string(record.Type),
+		Name:       record.Name,
+		TTL:        record.TTL,
+		Value:      b,
 	}
 }
 
 func MapRecordToRecordUpdated(record Record) events.RecordUpdated {
 	b, _ := record.Value.MarshalJSON()
 	return events.RecordUpdated{
-		ZoneID:   record.ZoneID,
-		RecordID: record.ID,
-		Name:     record.Name,
-		TTL:      record.TTL,
-		Value:    b,
+		ZoneID:     record.ZoneID,
+		RecordID:   record.ID,
+		RecordType: string(record.Type),
+		Name:       record.Name,
+		TTL:        record.TTL,
+		Value:      b,
 	}
 }
 
